@@ -13,7 +13,7 @@ public class StartGame {
         //设置窗体
         jf.setBounds((Toolkit.getDefaultToolkit().getScreenSize().width - 600) / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height - 640) / 2,
-                600, 640);
+                610, 635);
         //关闭窗口的同时关闭程序
         jf.setDefaultCloseOperation(3);
         //创建面板

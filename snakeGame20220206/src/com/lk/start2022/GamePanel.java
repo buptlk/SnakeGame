@@ -30,6 +30,8 @@ public class GamePanel extends JPanel {
     Timer timer;
     //gameover
     boolean isGameOver;
+    //得分
+    int score;
     //定义init方法，用于初始化
     public void init(){
         //初始化蛇的长度
@@ -54,6 +56,8 @@ public class GamePanel extends JPanel {
         isStart = false;
         //gameover
         isGameOver = false;
+        //得分
+        score = 0;
     }
     public GamePanel(){
         //初始化蛇
@@ -104,14 +108,15 @@ public class GamePanel extends JPanel {
                     //动头
                     snakeX[0] = (snakeX[0] + 20 * dirX[direction] + 600) % 600;
                     snakeY[0] = (snakeY[0] + 20 * dirY[direction]);
-                    if(snakeY[0] < 40) snakeY[0] = 620;
-                    else if(snakeY[0] > 620) snakeY[0] = 40;
+                    if(snakeY[0] < 40) snakeY[0] = 580;
+                    else if(snakeY[0] >= 600) snakeY[0] = 40;
 
                     //吃食物
                     if(foodX == snakeX[0] && foodY == snakeY[0]){
                         length ++;
-                        foodX = (new Random().nextInt(30) + 1) * 20;
-                        foodY = (new Random().nextInt(30) + 3) * 20;
+                        foodX = new Random().nextInt(30) * 20;
+                        foodY = (new Random().nextInt(28) + 2) * 20;
+                        score += 10;
                     }
                     //自口
                     for (int i = 1; i < length; i++) {
@@ -139,7 +144,7 @@ public class GamePanel extends JPanel {
         //调节画笔颜色
         g.setColor(new Color(92, 168, 171));
         //画一个矩形
-        g.fillRect(0,40,600,600);
+        g.fillRect(0,40,600,560);
         //画蛇
         //画head
         Images.snakeHeadImg.paintIcon(this,g,snakeX[0],snakeY[0]);
@@ -150,6 +155,11 @@ public class GamePanel extends JPanel {
         }
         //画食物
         Images.foodImg.paintIcon(this, g, foodX, foodY);
+        //写得分,不论游戏是否暂停，都要有积分
+        g.setColor(new Color(255, 255, 255));
+        g.setFont(new Font("微软雅黑",Font.BOLD, 20));
+        //内容，坐标
+        g.drawString("SCORE: " + score, 460, 20);
         //游戏暂停时，提示语
         if(!isStart){
             //画一个文字
@@ -165,10 +175,12 @@ public class GamePanel extends JPanel {
             //文字参数，加粗字体字号
             g.setFont(new Font("微软雅黑",Font.BOLD, 24));
             //画文字
-            g.drawString("GAME OVER! PRESS SPACE KEY TO RESTART!", 20, 250);
+            g.drawString("GAME OVER!", 200, 250);
+            g.drawString("PRESS SPACE KEY TO RESTART", 100, 280);
             //画爆炸
-            Images.boomImg.paintIcon(this, g, snakeX[0], snakeY[0]);
+            Images.boomImg.paintIcon(this, g, snakeX[0] - 5, snakeY[0]- 5);
             init();
         }
+
     }
 }
